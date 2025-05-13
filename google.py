@@ -15,15 +15,9 @@ if not api_key:
 llm = ChatGoogleGenerativeAI(model='gemini-2.0-flash-exp', api_key=SecretStr(api_key))
 
 
-async def run_search():
+async def run_search(tasks: tuple[str]):
 	agent = Agent(
-		task=(
-			'Go to google.com and search for "hotel koh samui chaweng 2.–8. April."'
-            'Go to the "Unterkunft" tab',
-            'Click on "Budget" and "Top-Bewertung"',
-            'Print the name and rating of the first 10 cheapest options',
-            'Finished'
-		),
+		task=tasks,
 		llm=llm,
 		max_actions_per_step=4,
 	)
@@ -32,4 +26,10 @@ async def run_search():
 
 
 if __name__ == '__main__':
-	asyncio.run(run_search())
+	task = (
+		'Go to google.com and search for "Travel recommendations for 2 people in Europe in August 2025"',
+		'Click on the first result',
+		'Print the title and url of the page',
+		'Finished'
+	)
+	asyncio.run(run_search(task))
